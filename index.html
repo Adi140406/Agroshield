@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AgroShield | Smart Crop Protection</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{ margin:0; padding:0; box-sizing:border-box; scroll-behavior:smooth; }
+
+    body{
+      font-family:'Poppins',sans-serif;
+      background:#07140d;
+      color:white;
+      overflow-x:hidden;
+    }
+
+    body::-webkit-scrollbar{ width:8px; }
+    body::-webkit-scrollbar-thumb{ background:#36d46c; border-radius:20px; }
+
+    /* ── NAVBAR ── */
+    nav{
+      width:100%;
+      position:fixed;
+      top:0; left:0;
+      padding:18px 8%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      backdrop-filter:blur(10px);
+      background:rgba(0,0,0,0.25);
+      z-index:1000;
+    }
+
+    .logo{ font-size:28px; font-weight:700; color:#5eff97; }
+
+    nav ul{ display:flex; gap:28px; list-style:none; align-items:center; }
+    nav ul li a{ text-decoration:none; color:white; font-weight:500; transition:0.3s; }
+    nav ul li a:hover{ color:#5eff97; }
+
+    .nav-order-btn{
+      background:#5eff97;
+      color:#041109 !important;
+      padding:10px 22px;
+      border-radius:50px;
+      font-weight:700 !important;
+      transition:0.3s !important;
+    }
+    .nav-order-btn:hover{
+      box-shadow:0 6px 20px rgba(94,255,151,0.4);
+      transform:translateY(-2px);
+      color:#041109 !important;
+    }
+
+    /* Mobile hamburger */
+    .hamburger{
+      display:none;
+      flex-direction:column;
+      gap:5px;
+      cursor:pointer;
+      padding:5px;
+    }
+    .hamburger span{
+      display:block;
+      width:25px; height:3px;
+      background:#5eff97;
+      border-radius:3px;
+      transition:0.3s;
+    }
+
+    /* ── HERO ── */
+    .hero{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:120px 8%;
+      position:relative;
+      overflow:hidden;
+      background:
+        linear-gradient(to right, rgba(0,0,0,0.88), rgba(0,0,0,0.35)),
+        url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1600&auto=format&fit=crop');
+      background-size:cover;
+      background-position:center;
+    }
+
+    .hero-text{ max-width:620px; animation:fadeUp 1s ease; }
+
+    .hero-text .tag{
+      display:inline-block;
+      background:rgba(94,255,151,0.15);
+      border:1px solid rgba(94,255,151,0.35);
+      color:#5eff97;
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:1.5px;
+      text-transform:uppercase;
+      padding:6px 18px;
+      border-radius:50px;
+      margin-bottom:20px;
+    }
+
+    .hero-text h1{ font-size:68px; line-height:1.1; margin-bottom:22px; }
+    .hero-text h1 span{ color:#5eff97; }
+
+    .hero-text p{ font-size:17px; color:#d9d9d9; line-height:1.85; margin-bottom:35px; }
+
+    .buttons{ display:flex; gap:20px; flex-wrap:wrap; }
+
+    .btn{
+      padding:15px 32px;
+      border:none;
+      border-radius:50px;
+      cursor:pointer;
+      font-size:16px;
+      font-weight:600;
+      transition:0.3s;
+      text-decoration:none;
+      display:inline-block;
+    }
+
+    .primary{ background:#5eff97; color:#041109; }
+    .primary:hover{ transform:translateY(-4px); box-shadow:0 10px 30px rgba(94,255,151,0.4); }
+
+    .secondary{ border:2px solid #5eff97; color:#5eff97; background:transparent; }
+    .secondary:hover{ background:#5eff97; color:#041109; }
+
+    /* Floating card */
+    .floating-card{
+      width:310px;
+      background:rgba(255,255,255,0.08);
+      backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,0.15);
+      padding:30px;
+      border-radius:25px;
+      animation:float 4s ease-in-out infinite;
+      flex-shrink:0;
+    }
+
+    .floating-card h3{ color:#5eff97; margin-bottom:15px; font-size:20px; }
+
+    .stat{
+      margin-top:18px;
+      padding:16px;
+      border-radius:15px;
+      background:rgba(255,255,255,0.05);
+    }
+    .stat h2{ color:#5eff97; margin-bottom:4px; font-size:28px; }
+    .stat p{ color:#ccc; font-size:13px; }
+
+    /* ── SECTIONS ── */
+    section{ padding:100px 8%; }
+
+    .section-title{ text-align:center; margin-bottom:65px; }
+    .section-title h2{ font-size:46px; margin-bottom:15px; }
+    .section-title p{ color:#bfbfbf; max-width:680px; margin:auto; line-height:1.75; }
+
+    /* ── CARDS ── */
+    .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:28px; }
+
+    .card{
+      background:#0d1f15;
+      padding:35px;
+      border-radius:25px;
+      transition:0.4s;
+      border:1px solid transparent;
+    }
+    .card:hover{ transform:translateY(-10px); border-color:#5eff97; box-shadow:0 15px 40px rgba(94,255,151,0.15); }
+    .card h3{ margin-bottom:14px; color:#5eff97; font-size:22px; }
+    .card p{ color:#d2d2d2; line-height:1.7; }
+
+    /* ── HOW IT WORKS ── */
+    .process{ display:flex; justify-content:center; gap:40px; flex-wrap:wrap; }
+
+    .step{ text-align:center; max-width:240px; }
+
+    .circle{
+      width:90px; height:90px;
+      background:#5eff97; color:#041109;
+      display:flex; align-items:center; justify-content:center;
+      border-radius:50%;
+      margin:auto;
+      font-size:30px; font-weight:700;
+      margin-bottom:20px;
+      box-shadow:0 0 30px rgba(94,255,151,0.35);
+    }
+
+    .step h3{ margin-bottom:8px; font-size:18px; }
+    .step p{ color:#bbb; font-size:14px; line-height:1.6; }
+
+    /* connector line between steps */
+    .process-wrap{
+      position:relative;
+      display:flex;
+      justify-content:center;
+      gap:60px;
+      flex-wrap:wrap;
+    }
+
+    /* ── GALLERY ── */
+    .gallery-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:22px;
+    }
+    .gallery-grid img{
+      width:100%; height:260px;
+      object-fit:cover;
+      border-radius:20px;
+      transition:0.4s;
+      cursor:pointer;
+    }
+    .gallery-grid img:hover{ transform:scale(1.03); box-shadow:0 20px 40px rgba(94,255,151,0.2); }
+
+    /* ── CONTACT ── */
+    .contact-box{
+      background:#0d1f15;
+      border-radius:30px;
+      padding:60px;
+    }
+
+    form{ display:flex; flex-direction:column; gap:18px; }
+
+    input, textarea, select{
+      padding:16px 20px;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:15px;
+      background:#13281c;
+      color:white;
+      font-size:15px;
+      font-family:'Poppins',sans-serif;
+      outline:none;
+      transition:border-color 0.3s;
+    }
+    input:focus, textarea:focus, select:focus{ border-color:#5eff97; }
+    textarea{ resize:none; height:140px; }
+    select option{ background:#13281c; }
+
+    .form-success{
+      display:none;
+      background:rgba(94,255,151,0.12);
+      border:1px solid rgba(94,255,151,0.4);
+      border-radius:15px;
+      padding:20px 25px;
+      color:#5eff97;
+      font-weight:500;
+      text-align:center;
+    }
+
+    /* ── ORDER NOW PAGE ── */
+    #order{ background:#07140d; }
+
+    .order-hero{
+      text-align:center;
+      margin-bottom:65px;
+    }
+    .order-hero h2{ font-size:46px; margin-bottom:15px; }
+    .order-hero p{ color:#bfbfbf; max-width:620px; margin:auto; line-height:1.75; }
+
+    .plans-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+      gap:28px;
+      margin-bottom:70px;
+    }
+
+    .plan-card{
+      background:#0d1f15;
+      border-radius:25px;
+      padding:40px 35px;
+      border:1px solid rgba(255,255,255,0.08);
+      transition:0.4s;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .plan-card.popular{
+      border-color:#5eff97;
+      box-shadow:0 0 40px rgba(94,255,151,0.15);
+    }
+
+    .popular-badge{
+      position:absolute;
+      top:20px; right:-28px;
+      background:#5eff97;
+      color:#041109;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      padding:5px 40px;
+      transform:rotate(45deg);
+    }
+
+    .plan-card:hover{ transform:translateY(-8px); border-color:#5eff97; }
+    .plan-card:hover .popular-badge{ background:#fff; }
+
+    .plan-name{
+      font-size:14px;
+      font-weight:600;
+      letter-spacing:1.5px;
+      text-transform:uppercase;
+      color:#5eff97;
+      margin-bottom:12px;
+    }
+
+    .plan-price{
+      font-size:42px;
+      font-weight:700;
+      margin-bottom:5px;
+      line-height:1;
+    }
+
+    .plan-price span{ font-size:18px; font-weight:400; color:#aaa; }
+
+    .plan-desc{ color:#bbb; font-size:14px; margin-bottom:28px; line-height:1.6; }
+
+    .plan-features{ list-style:none; margin-bottom:35px; display:flex; flex-direction:column; gap:12px; }
+
+    .plan-features li{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:14px;
+      color:#d2d2d2;
+    }
+
+    .plan-features li::before{
+      content:"✓";
+      width:22px; height:22px;
+      background:rgba(94,255,151,0.15);
+      color:#5eff97;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      font-weight:700;
+      flex-shrink:0;
+    }
+
+    .plan-btn{
+      width:100%;
+      padding:14px;
+      border-radius:50px;
+      font-size:15px;
+      font-weight:600;
+      cursor:pointer;
+      border:2px solid #5eff97;
+      color:#5eff97;
+      background:transparent;
+      font-family:'Poppins',sans-serif;
+      transition:0.3s;
+      text-align:center;
+    }
+    .plan-btn:hover, .plan-card.popular .plan-btn{
+      background:#5eff97;
+      color:#041109;
+    }
+
+    /* Order form */
+    .order-form-wrap{
+      background:#0d1f15;
+      border-radius:30px;
+      padding:60px;
+      border:1px solid rgba(255,255,255,0.06);
+    }
+
+    .order-form-wrap h3{
+      font-size:30px;
+      margin-bottom:10px;
+    }
+
+    .order-form-wrap p.sub{
+      color:#bbb;
+      margin-bottom:35px;
+      font-size:15px;
+    }
+
+    .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+
+    /* ── FOOTER ── */
+    footer{
+      text-align:center;
+      padding:35px;
+      color:#8f8f8f;
+      margin-top:30px;
+      border-top:1px solid rgba(255,255,255,0.06);
+      font-size:14px;
+    }
+
+    footer strong{ color:#5eff97; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes float{
+      0%{ transform:translateY(0px); }
+      50%{ transform:translateY(-15px); }
+      100%{ transform:translateY(0px); }
+    }
+    @keyframes fadeUp{
+      from{ opacity:0; transform:translateY(40px); }
+      to{ opacity:1; transform:translateY(0px); }
+    }
+
+    /* ── MOBILE ── */
+    @media(max-width:950px){
+      .hero{ flex-direction:column; text-align:center; gap:50px; padding-top:100px; }
+      .hero-text h1{ font-size:46px; }
+      .buttons{ justify-content:center; }
+      .floating-card{ width:100%; max-width:380px; }
+      .contact-box{ padding:35px; }
+      .order-form-wrap{ padding:35px; }
+      .form-row{ grid-template-columns:1fr; }
+
+      nav ul{ display:none; flex-direction:column; position:absolute; top:72px; left:0; width:100%; background:rgba(7,20,13,0.97); padding:20px 8%; gap:20px; border-bottom:1px solid rgba(94,255,151,0.2); }
+      nav ul.open{ display:flex; }
+      .hamburger{ display:flex; }
+    }
+
+    @media(max-width:600px){
+      .hero-text h1{ font-size:36px; }
+      .section-title h2{ font-size:32px; }
+      .order-hero h2{ font-size:32px; }
+      .plan-price{ font-size:34px; }
+      .order-form-wrap h3{ font-size:24px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">AgroShield</div>
+
+    <ul id="navMenu">
+      <li><a href="#problem">Problem</a></li>
+      <li><a href="#solution">Solution</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#benefits">Benefits</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#order" class="nav-order-btn">Order Now</a></li>
+    </ul>
+
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <div class="hero-text">
+      <div class="tag">🌾 Agri-Tech Innovation 2026</div>
+
+      <h1>
+        Sensor-Powered <br>
+        <span>Bird Protection</span><br>
+        for Farmers
+      </h1>
+
+      <p>
+        AgroShield places smart sensor poles around your field. When birds
+        approach, automated water sprays instantly scare them off — while
+        simultaneously adding moisture your soil and crops need.
+        No chemicals. No constant effort. Just results.
+      </p>
+
+      <div class="buttons">
+        <a href="#solution" class="btn primary">See How It Works</a>
+        <a href="#order" class="btn secondary">Order Now</a>
+      </div>
+    </div>
+
+    <div class="floating-card">
+      <h3>📡 Live Farm Stats</h3>
+
+      <div class="stat">
+        <h2>~15%</h2>
+        <p>Average crop loss from bird damage</p>
+      </div>
+
+      <div class="stat">
+        <h2>24/7</h2>
+        <p>Automated sensor monitoring</p>
+      </div>
+
+      <div class="stat">
+        <h2>0 ☢️</h2>
+        <p>Chemical-free, eco-friendly system</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- PROBLEM -->
+  <section id="problem">
+    <div class="section-title">
+      <h2>The Problem</h2>
+      <p>
+        Farmers lose nearly 15% of their crops to bird attacks every season.
+        Traditional fixes like scarecrows, plates, and noise-making tools stop
+        working quickly because birds are smart — they adapt to repetitive sounds
+        within days, making manual methods a waste of time and energy.
+      </p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>🌾 Crop Damage</h3>
+        <p>Birds destroy seeds, fruits and grains during critical growth stages, leading to significant losses before harvest.</p>
+      </div>
+      <div class="card">
+        <h3>💪 Manual Effort</h3>
+        <p>Farmers spend hours every day manually scaring birds using plates, sticks and noise — time that could be spent elsewhere.</p>
+      </div>
+      <div class="card">
+        <h3>🔄 Birds Adapt</h3>
+        <p>Sound-based deterrents become completely useless within days as birds learn that the noise poses no real threat.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUTION -->
+  <section id="solution" style="background:#0a1a10;">
+    <div class="section-title">
+      <h2>Our Smart Solution</h2>
+      <p>
+        AgroShield installs sensor poles around the perimeter of your field.
+        When a bird is detected, targeted water jets fire instantly — scaring
+        birds away while also watering your crops. Simple, smart, sustainable.
+      </p>
+    </div>
+
+    <div class="process">
+      <div class="step">
+        <div class="circle">1</div>
+        <h3>Sensor Poles Installed</h3>
+        <p>Smart poles are placed around the field boundary, covering the full perimeter.</p>
+      </div>
+      <div class="step">
+        <div class="circle">2</div>
+        <h3>Motion Detected</h3>
+        <p>Intelligent sensors detect bird movement approaching the crop area in real time.</p>
+      </div>
+      <div class="step">
+        <div class="circle">3</div>
+        <h3>Water Jets Fire</h3>
+        <p>Targeted water nozzles activate instantly, spraying a harmless stream toward the birds.</p>
+      </div>
+      <div class="step">
+        <div class="circle">4</div>
+        <h3>Dual Benefit</h3>
+        <p>Birds flee the field while your crops and soil receive the moisture they need to thrive.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="section-title">
+      <h2>Features</h2>
+      <p>Designed for sustainable agriculture with smart automation and low maintenance operation.</p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>📡 Smart Sensors</h3>
+        <p>Real-time bird movement detection using intelligent motion sensors mounted on durable outdoor poles.</p>
+      </div>
+      <div class="card">
+        <h3>💦 Auto Water Spray</h3>
+        <p>Immediate, targeted water response — no human intervention required, day or night.</p>
+      </div>
+      <div class="card">
+        <h3>🌊 Water Efficiency</h3>
+        <p>Precision spraying minimizes water wastage while simultaneously hydrating crops and soil.</p>
+      </div>
+      <div class="card">
+        <h3>🌿 Eco Friendly</h3>
+        <p>100% chemical-free crop protection that keeps the ecosystem and surrounding environment safe.</p>
+      </div>
+      <div class="card">
+        <h3>☀️ Solar Compatible</h3>
+        <p>Future-ready design capable of solar-powered operation — ideal for remote farm locations.</p>
+      </div>
+      <div class="card">
+        <h3>🔧 Low Maintenance</h3>
+        <p>Rugged outdoor-grade hardware built to last across seasons with minimal upkeep needed.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery" style="background:#0a1a10;">
+    <div class="section-title">
+      <h2>AgroShield In Action</h2>
+      <p>Smart farming solutions designed for modern agriculture and sustainable crop protection.</p>
+    </div>
+
+    <div class="gallery-grid">
+      <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=1200&auto=format&fit=crop" alt="Farmfield">
+      <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?q=80&w=1200&auto=format&fit=crop" alt="Crops growing">
+      <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=1200&auto=format&fit=crop" alt="Irrigation field">
+      <img src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?q=80&w=1200&auto=format&fit=crop" alt="Sprinkler on crops">
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section id="benefits">
+    <div class="section-title">
+      <h2>Why Farmers Choose AgroShield</h2>
+      <p>AgroShield is designed to improve agricultural productivity through intelligent automation, sustainable protection, and efficient resource management.</p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>✅ Reduced Crop Loss</h3>
+        <p>Protects crops from bird attacks during sensitive growth stages — saving up to 15% of your yield every season.</p>
+      </div>
+      <div class="card">
+        <h3>⏱️ Less Human Effort</h3>
+        <p>Eliminates the need for constant manual bird-scaring, freeing farmers to focus on what matters more.</p>
+      </div>
+      <div class="card">
+        <h3>💧 Smart Water Usage</h3>
+        <p>Spraying scares birds away AND maintains soil moisture — one action, two benefits.</p>
+      </div>
+      <div class="card">
+        <h3>🌱 Eco-Friendly Farming</h3>
+        <p>A sustainable, chemical-free solution that supports responsible agriculture and healthier produce.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       ORDER NOW PAGE
+  ═══════════════════════════════════════ -->
+  <section id="order" style="background:#060f08;">
+    <div class="order-hero">
+      <h2>Order AgroShield</h2>
+      <p>
+        Choose the right plan for your farm size and get started with
+        smart, automated crop protection today.
+      </p>
+    </div>
+
+    <!-- PRICING PLANS -->
+    <div class="plans-grid">
+
+      <div class="plan-card">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price">₹90,000 <span>/ unit</span></div>
+        <div class="plan-desc">Best for small farms or pilot testing on a single crop zone.</div>
+        <ul class="plan-features">
+          <li>2 sensor poles</li>
+          <li>Coverage up to 0.5 acres</li>
+          <li>Basic motion detection</li>
+          <li>Manual water tank refill</li>
+          <li>1-year hardware warranty</li>
+        </ul>
+        <button class="plan-btn" onclick="selectPlan('Starter – ₹12,999')">Choose Starter</button>
+      </div>
+
+      <div class="plan-card popular">
+        <div class="popular-badge">Popular</div>
+        <div class="plan-name">Farm Pro</div>
+        <div class="plan-price">₹1,00,000 <span>/ unit</span></div>
+        <div class="plan-desc">Ideal for mid-size farms needing full perimeter protection.</div>
+        <ul class="plan-features">
+          <li>6 sensor poles</li>
+          <li>Coverage up to 2 acres</li>
+          <li>360° motion detection</li>
+          <li>Auto water refill connector</li>
+          <li>Solar panel compatible</li>
+          <li>2-year hardware warranty</li>
+          <li>Priority support</li>
+        </ul>
+        <button class="plan-btn" onclick="selectPlan('Farm Pro – ₹28,999')">Choose Farm Pro</button>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-name">Enterprise</div>
+        <div class="plan-price">Custom</div>
+        <div class="plan-desc">For large farms, cooperatives, or institutional agricultural projects.</div>
+        <ul class="plan-features">
+          <li>Unlimited sensor poles</li>
+          <li>Coverage 5+ acres</li>
+          <li>Centralized dashboard</li>
+          <li>Dedicated installation team</li>
+          <li>Solar-powered system</li>
+          <li>3-year full warranty</li>
+          <li>Dedicated account manager</li>
+        </ul>
+        <button class="plan-btn" onclick="selectPlan('Enterprise – Custom Quote')">Request Quote</button>
+      </div>
+
+    </div>
+
+    <!-- ORDER FORM -->
+    <div class="order-form-wrap">
+      <h3>Place Your Order</h3>
+      <p class="sub">Fill in your details below and our team will confirm your order within 24 hours.</p>
+
+      <form id="orderForm" onsubmit="submitOrder(event)">
+        <div class="form-row">
+          <input type="text" id="orderName" placeholder="Full Name" required>
+          <input type="tel" id="orderPhone" placeholder="Phone Number" required>
+        </div>
+
+        <div class="form-row">
+          <input type="email" id="orderEmail" placeholder="Email Address" required>
+          <input type="text" id="orderVillage" placeholder="Village / Town / City" required>
+        </div>
+
+        <div class="form-row">
+          <input type="text" id="orderState" placeholder="State" required>
+          <input type="number" id="orderAcres" placeholder="Farm Size (in acres)" min="0.1" step="0.1" required>
+        </div>
+
+        <select id="orderPlan" required>
+          <option value="" disabled selected>Select a Plan</option>
+          <option value="Starter – ₹12,999">Starter – ₹12,999 (up to 0.5 acres)</option>
+          <option value="Farm Pro – ₹28,999">Farm Pro – ₹28,999 (up to 2 acres)</option>
+          <option value="Enterprise – Custom Quote">Enterprise – Custom Quote (5+ acres)</option>
+        </select>
+
+        <textarea id="orderNotes" placeholder="Any additional details or questions? (optional)"></textarea>
+
+        <button type="submit" class="btn primary" style="width:100%; font-size:17px; border-radius:15px;">
+          🌿 Submit Order Request
+        </button>
+      </form>
+
+      <div class="form-success" id="orderSuccess">
+        ✅ Thank you! Your order request has been received. Our team will contact you within 24 hours to confirm details and schedule installation.
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-box">
+      <div class="section-title">
+        <h2>Contact Us</h2>
+        <p>Interested in a demo or have questions? Reach out to us below.</p>
+      </div>
+
+      <form id="contactForm" onsubmit="submitContact(event)">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn primary">Send Message</button>
+      </form>
+
+      <div class="form-success" id="contactSuccess">
+        ✅ Message sent! We'll get back to you soon.
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 <strong>AgroShield Technologies</strong> | Smart Farming Solutions &nbsp;·&nbsp;
+    Entrepreneurship Project — Made with 🌿
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    function toggleMenu(){
+      const menu = document.getElementById('navMenu');
+      menu.classList.toggle('open');
+    }
+
+    // Close menu on link click
+    document.querySelectorAll('#navMenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('navMenu').classList.remove('open');
+      });
+    });
+
+    // Auto-select plan from pricing cards
+    function selectPlan(planValue){
+      const select = document.getElementById('orderPlan');
+      select.value = planValue;
+      document.getElementById('order').querySelector('.order-form-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Order form submit
+    function submitOrder(e){
+      e.preventDefault();
+      document.getElementById('orderForm').style.display = 'none';
+      const success = document.getElementById('orderSuccess');
+      success.style.display = 'block';
+    }
+
+    // Contact form submit
+    function submitContact(e){
+      e.preventDefault();
+      document.getElementById('contactForm').style.display = 'none';
+      const success = document.getElementById('contactSuccess');
+      success.style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
